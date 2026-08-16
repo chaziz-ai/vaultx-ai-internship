@@ -34,3 +34,5 @@ week-01/ contains all Week 1 files: api_wrapper.py (reusable API wrapper), summa
 - Task 4. Temperature parameter experiments
 - Task 5. Reusable API wrapper with error handling
 - Task 6. CLI summarizer tool (file & text input)
+
+  Demo video: [week-01/week_01_demo.mp4](week-01/week_01_demo.mp4) — click "View raw" to watch.
