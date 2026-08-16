@@ -10,7 +10,7 @@ class APIWrapper:
         self.client=OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
         self.model=model
 
-    def send_message(self,prompt):
+    def send_message(self,prompt,max_tokens=300):
         attempt=1
         max_attempts=3
         while attempt <= max_attempts:
@@ -18,7 +18,8 @@ class APIWrapper:
                 response=self.client.chat.completions.create(
                  model=self.model,
                     messages=[{'role':'user','content':prompt}],
-                    timeout=10
+                    timeout=10,
+                    max_tokens=max_tokens
                 )
                 print(f'Tokens used \n:Input Tokens: {response.usage.prompt_tokens} ,\nOutput Tokens: {response.usage.completion_tokens} ,\nTotal tokens: {response.usage.total_tokens}')
                 return response
@@ -38,7 +39,7 @@ class APIWrapper:
 if __name__=='__main__':
     wrapper=APIWrapper()
     result= wrapper.send_message('Tell me about most famous food in Bahawalpur in one sentence.')
-    if result is not None:
+    if result is not None:  
         print(result.choices[0].message.content)
     else:
         print('No response recieved')
