@@ -10,7 +10,7 @@ class APIWrapper:
         self.client=OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
         self.model=model
 
-    def send_message(self,prompt,max_tokens=300):
+    def send_message(self,prompt,max_tokens=500):
         attempt=1
         max_attempts=3
         while attempt <= max_attempts:
