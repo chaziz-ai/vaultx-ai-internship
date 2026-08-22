@@ -37,14 +37,20 @@ def get_structured_ticket(user_message,max_retries=3):
 
     Customer message: "{user_message}"
 
+    Classification rules:
+    - category: Use "general" for simple questions or information requests with no problem being reported (e.g. "does the app support X?"). Use "billing" for payment, subscription, or charge-related actions (e.g. cancel, refund, charge dispute). Use "complaint" only when the customer expresses repeated or escalated frustration (e.g. mentions contacting support multiple times, or calls the service unacceptable). Use "technical" only when an actual bug or malfunction is being reported. Use "account" for login/credential/profile-detail issues.
+    - priority: Default to "low" for routine requests and general questions with no urgency. Use "medium" when something is inconvenient but not blocking. Use "high" only when the customer explicitly signals urgency, money/access is blocked, or a service outage is affecting them.
+    - needs_human: Set to false if the message is a simple informational question that can be answered from existing knowledge (like an FAQ). Set to true only if it requires an account action, a refund, or solving a non-trivial problem.
+    - priority: Default to "low" for routine requests and general questions with no urgency. Use "medium" when something is inconvenient, not blocking, OR has a financial/billing consequence if delayed (e.g. unwanted subscription charges). Use "high" only when the customer explicitly signals urgency, money/access is already blocked, or a service outage is affecting them.
+    
     Return JSON in exactly this shape:
     {{
-      "category": one of ["billing", "technical", "general", "account", "complaint"],
-      "priority": one of ["low", "medium", "high"],
+     "category": one of ["billing", "technical", "general", "account", "complaint"],
+     "priority": one of ["low", "medium", "high"],
      "sentiment": one of ["positive", "neutral", "negative"],
      "needs_human": true or false
     }}
-    """
+    """ 
 
     wrapper = APIWrapper()
 
