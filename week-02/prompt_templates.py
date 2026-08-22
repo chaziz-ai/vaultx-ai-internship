@@ -85,7 +85,6 @@ if __name__=='__main__':
                              "I ordered 2 days ago, paid extra for express shipping, still not arrived. Third time this happened")
     print(result4)
 
-
     print('\n ---Constrained Output---')
     result5 = constrained_based_prompt(
     "Classify this support message",
