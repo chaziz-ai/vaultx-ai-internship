@@ -1,9 +1,14 @@
 import json
+import os
 import sys
-sys.path.append('week-01')
+current_dir = os.path.dirname(os.path.abspath(__file__))
+week01_path = os.path.join(current_dir, '..', '..', 'week-01')
+sys.path.append(week01_path)
 from enum import Enum
 from pydantic import BaseModel, ValidationError
 from api_wrapper import APIWrapper
+from vaultx_prompts.logger_config import get_logger
+logger = get_logger("structured_output")
 
 class Priority(str,Enum):
     LOW='low'
@@ -31,6 +36,7 @@ class SupportTicket(BaseModel):
 
 
 def get_structured_ticket(user_message,max_retries=3):
+    logger.info(f"Received request to classify message: {user_message[:50]}...")
     prompt = f"""You are a support ticket classifier.
 
     Classify the following customer message and return ONLY valid JSON — no explanation, no extra text before or after.
@@ -58,7 +64,7 @@ def get_structured_ticket(user_message,max_retries=3):
         response = wrapper.send_message(prompt)
 
         if response is None:
-            print(f"Attempt {attempt + 1}: No response from API")
+            logger.warning(f"Attempt {attempt + 1}: No response from API")
             continue
 
         response_text = response.choices[0].message.content
@@ -69,9 +75,9 @@ def get_structured_ticket(user_message,max_retries=3):
             return ticket
 
         except (json.JSONDecodeError, ValidationError) as e:
-            print(f"Attempt {attempt + 1} failed: {e}")
+            logger.warning(f"Attempt {attempt + 1} failed: {e}")
 
-    print("All attempts failed")
+    logger.error(f"All {max_retries} attempts failed for message: {user_message[:50]}")
     return None
 
 if __name__=='__main__':
