@@ -1,0 +1,241 @@
+{
+  "name": "W3-Automation-02-ContentPipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1iRODSywCZBQfdn_kx1IqyQeMlhWkbLGHPImH5OlGCTM",
+          "mode": "list",
+          "cachedResultName": "Week-03-Automation#2-Content Pipeline",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iRODSywCZBQfdn_kx1IqyQeMlhWkbLGHPImH5OlGCTM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Raw Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iRODSywCZBQfdn_kx1IqyQeMlhWkbLGHPImH5OlGCTM/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0f857fbe-1bb3-4301-b36d-dfeb1715b195",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "wdnuwDDUOyZhPvET",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1iRODSywCZBQfdn_kx1IqyQeMlhWkbLGHPImH5OlGCTM",
+          "mode": "list",
+          "cachedResultName": "Week-03-Automation#2-Content Pipeline",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iRODSywCZBQfdn_kx1IqyQeMlhWkbLGHPImH5OlGCTM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 239032429,
+          "mode": "list",
+          "cachedResultName": "Processed Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1iRODSywCZBQfdn_kx1IqyQeMlhWkbLGHPImH5OlGCTM/edit#gid=239032429"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $json.Title }}",
+            "Summary": "={{ $json.Summary }}",
+            "Tags": "={{ $json.Tags }}",
+            "Timestamp": "={{ $json.Timestamp }}",
+            "Draft": "={{ $json.Draft }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tags",
+              "displayName": "Tags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Draft",
+              "displayName": "Draft",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        832,
+        0
+      ],
+      "id": "6e9a4f99-c104-4d90-9ecd-575cbf9895ed",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are a content summarization assistant. Given a title and content, respond ONLY in valid JSON format with no extra text, no markdown, no explanation.\n\nTitle: {{ $json.Title }}\nContent: {{ $json.Content }}\n\nReturn exactly this JSON structure:\n{\n  \"summary\": \"a 2-3 sentence summary of the content\",\n  \"tags\": \"3-5 comma-separated relevant keywords\",\n  \"draft\": \"a short 2-3 sentence social media style post based on this content\"\n}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "17bad019-5a39-4d43-8d6b-4988ab9464fc",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7lvEEqbMcnYpot6v",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.item.json.output[0].content[0].text;\nconst cleaned = raw.replace('```json', '').replace('```', '').trim();\nconst parsed = JSON.parse(cleaned);\n\nreturn {\n  json: {\n    Title: $('Google Sheets Trigger').item.json.Title,\n    Summary: parsed.summary,\n    Tags: parsed.tags,\n    Draft: parsed.draft,\n    Timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "b956351a-323b-4891-9ff5-f365723f5766",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "e834f623-1101-45c0-a4df-91c71e9e2167",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "gvS95LCMwQQkrxFL",
+  "tags": []
+}
