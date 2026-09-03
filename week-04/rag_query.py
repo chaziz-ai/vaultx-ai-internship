@@ -59,6 +59,6 @@ Rules:
 
 
 if __name__=='__main__':
-    test_question='What tools are required for Week 01 setup?'
+    test_question='What is deadline of week 2 submission?'
     answer=generate_answer(test_question)
     print(answer)

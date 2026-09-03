@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "question": "Week 1 mein GitHub repo ka naam kya rakhna tha?",
+    "expected_answer": "vaultx-ai-internship",
+    "should_refuse": false,
+    "source_week": "Week 01"
+  },
+  {
+    "id": 2,
+    "question": "Week 1 mein kam se kam kitne meaningful commits karne thay?",
+    "expected_answer": "Kam se kam 5 commits, ek giant commit end mein zero score karega",
+    "should_refuse": false,
+    "source_week": "Week 01"
+  },
+  {
+    "id": 3,
+    "question": "Week 1 ke glossary mein kitne terms define karne thay?",
+    "expected_answer": "9 terms",
+    "should_refuse": false,
+    "source_week": "Week 01"
+  },
+  {
+    "id": 4,
+    "question": "Week 1 mein 'Working API integration' criterion ka weight kitna tha evaluation mein?",
+    "expected_answer": "25%",
+    "should_refuse": false,
+    "source_week": "Week 01"
+  },
+  {
+    "id": 5,
+    "question": "Week 1 ka CLI tool kya output deta tha?",
+    "expected_answer": "Summary, key points, aur sentiment",
+    "should_refuse": false,
+    "source_week": "Week 01"
+  },
+  {
+    "id": 6,
+    "question": "Week 2 mein classification tool kis JSON fields ke sath output deta tha?",
+    "expected_answer": "category, priority, sentiment, needs_human",
+    "should_refuse": false,
+    "source_week": "Week 02"
+  },
+  {
+    "id": 7,
+    "question": "Week 2 ka eval set mein kitne cases hone chahiye thay?",
+    "expected_answer": "10-20 cases",
+    "should_refuse": false,
+    "source_week": "Week 02"
+  },
+  {
+    "id": 8,
+    "question": "Week 2 mein structured output validate karne ke liye kya use hota tha?",
+    "expected_answer": "Pydantic schema",
+    "should_refuse": false,
+    "source_week": "Week 02"
+  },
+  {
+    "id": 9,
+    "question": "Week 2 ka classifier tool kitne realistic samples pe test hona tha?",
+    "expected_answer": "20 samples",
+    "should_refuse": false,
+    "source_week": "Week 02"
+  },
+  {
+    "id": 10,
+    "question": "Week 3 mein kitne apps ko official connectors se connect karna tha?",
+    "expected_answer": "Kam se kam 2 real apps",
+    "should_refuse": false,
+    "source_week": "Week 03"
+  },
+  {
+    "id": 11,
+    "question": "Week 3 ka Automation #1 kis trigger pe chalta tha?",
+    "expected_answer": "New email/form/message trigger, automatically (manual button nahi)",
+    "should_refuse": false,
+    "source_week": "Week 03"
+  },
+  {
+    "id": 12,
+    "question": "Week 3 mein failures handle karne ke liye kya add karna tha?",
+    "expected_answer": "Error branches, retries, aur fallback",
+    "should_refuse": false,
+    "source_week": "Week 03"
+  },
+  {
+    "id": 13,
+    "question": "Week 3 ka runbook mein kya sections hone chahiye thay?",
+    "expected_answer": "What it does, triggers, cost, how to fix it",
+    "should_refuse": false,
+    "source_week": "Week 03"
+  },
+  {
+    "id": 14,
+    "question": "Week 4 mein vector DB ke kaunse options diye gaye thay?",
+    "expected_answer": "Chroma, FAISS, ya pgvector",
+    "should_refuse": false,
+    "source_week": "Week 04"
+  },
+  {
+    "id": 15,
+    "question": "Week 4 mein QA pairs kitne banane thay evaluation ke liye?",
+    "expected_answer": "15-20 QA pairs",
+    "should_refuse": false,
+    "source_week": "Week 04"
+  },
+  {
+    "id": 16,
+    "question": "Week 4 ke guardrails task mein kya handle karna tha?",
+    "expected_answer": "'No answer found' cases, hallucination check, aur sources dikhana",
+    "should_refuse": false,
+    "source_week": "Week 04"
+  },
+  {
+    "id": 17,
+    "question": "Kis week mein Docker use karne ka zikar hai?",
+    "expected_answer": "Koi bhi week ke document mein Docker ka explicit zikar nahi hai",
+    "should_refuse": true,
+    "source_week": "N/A"
+  },
+  {
+    "id": 18,
+    "question": "Internship ka total stipend kitna hai?",
+    "expected_answer": "Documents mein stipend/salary ka koi zikar nahi hai",
+    "should_refuse": true,
+    "source_week": "N/A"
+  }
+]
