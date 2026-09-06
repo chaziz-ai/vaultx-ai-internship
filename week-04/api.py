@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from rag_query import generate_answer,retrieve_chunks
+from rag_query import generate_answer
 
 app=FastAPI()
 
@@ -10,15 +10,11 @@ class Question(BaseModel):
 
 @app.post('/ask')
 def ask(payload : Question):
-    answer=generate_answer(payload.question,payload.k)
-    results=retrieve_chunks(payload.question,payload.k)
-
-    sources=[]
-    for meta in results['metadatas'][0]:
-        sources.append(meta['source_file'])
+    result=generate_answer(payload.question,payload.k)
 
     return{
         'question': payload.question,
-        'answer': answer,
-        'sources': sources
+        'answer': result['answer'],
+        'grounded': result['grounded'],
+        'sources': result['sources']
     }

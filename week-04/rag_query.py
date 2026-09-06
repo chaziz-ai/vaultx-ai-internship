@@ -20,6 +20,9 @@ collection=client.get_or_create_collection(
 
 llm_client=OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
+DISTANCE_THRESHOLD = 1.5  
+
+
 def retrieve_chunks(question,k=3):
     results=collection.query(
         query_texts=[question],
@@ -27,10 +30,45 @@ def retrieve_chunks(question,k=3):
     )
     return results
 
+
+def check_hallucination(answer, context):
+    """LLM se dobara check karwao ke answer context se supported hai ya nahi."""
+    if 'Answer not found in documents' in answer:
+        return True  
+
+    check_prompt = f'''Context:
+{context}
+
+Answer given: {answer}
+
+Is this answer FULLY supported by the context above? Reply with ONLY one word: "GROUNDED" or "HALLUCINATED".'''
+
+    response = llm_client.chat.completions.create(
+        model='gpt-4o-mini',
+        messages=[{'role': 'user', 'content': check_prompt}],
+        temperature=0
+    )
+    verdict = response.choices[0].message.content.strip().upper()
+    return 'GROUNDED' in verdict
+
+
 def generate_answer(question,k=3):
     results=retrieve_chunks(question,k)
     documents=results['documents'][0]
     metadatas=results['metadatas'][0]
+    distances=results['distances'][0]
+
+    sources_used = [
+        {'source_file': metadatas[i]['source_file'], 'distance': distances[i]}
+        for i in range(len(documents))
+    ]
+
+    if not documents or min(distances) > DISTANCE_THRESHOLD:
+        return {
+            'answer': 'Answer not found in documents.',
+            'sources': [],
+            'grounded': True
+        }
 
     context_parts=[]
     for i,doc in enumerate(documents):
@@ -55,10 +93,29 @@ Rules:
         ]
     )
 
-    return response.choices[0].message.content
+    answer = response.choices[0].message.content
+
+    is_grounded = check_hallucination(answer, context)
+    if not is_grounded:
+        answer = 'Answer not found in documents. (Flagged as potentially ungrounded)'
+
+    
+    return {
+        'answer': answer,
+        'sources': sources_used,
+        'grounded': is_grounded
+    }
 
 
 if __name__=='__main__':
-    test_question='What is deadline of week 2 submission?'
-    answer=generate_answer(test_question)
-    print(answer)
+    test_questions = [
+        'What is deadline of week 2 submission?',
+        'What is the capital of France?'
+    ]
+    for q in test_questions:
+        print('='*50)
+        print('Q:', q)
+        result = generate_answer(q)
+        print('Answer:', result['answer'])
+        print('Grounded:', result['grounded'])
+        print('Sources:', result['sources'])
