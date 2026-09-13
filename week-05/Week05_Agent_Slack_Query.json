@@ -1,0 +1,458 @@
+{
+  "name": "Week05_Agent_Slack_Query",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/chat",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        944,
+        0
+      ],
+      "id": "adfb4ef4-a7b2-4fff-8a10-5b0e0d505a2f",
+      "name": "HTTP Request",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0BURP8B6FM",
+          "mode": "id"
+        },
+        "text": "={{ $json.response }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.5,
+      "position": [
+        1312,
+        -96
+      ],
+      "id": "6fc69c3f-3aed-4c8f-9ed5-be51ee781b77",
+      "name": "Send a message",
+      "webhookId": "51a7c078-c443-401e-8574-368e71cc9a3c",
+      "credentials": {
+        "slackApi": {
+          "id": "sWsZUemsnagUOxMv",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "trigger": [
+          "message"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C0BURP8B6FM",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2094a709-ac39-4471-af39-591d440e41e4",
+      "name": "Slack Trigger",
+      "webhookId": "ba2c34d8-f8e2-4ef8-bb38-1e982f427dd2",
+      "credentials": {
+        "slackApi": {
+          "id": "sWsZUemsnagUOxMv",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a519d88b-8f3a-47b8-b647-247deee39523",
+              "leftValue": "={{ $json.bot_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "98f865e3-8c6c-46ca-8064-47685ed9382c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0BURP8B6FM",
+          "mode": "id"
+        },
+        "text": "Sorry, I'm having trouble processing your request right now. Please try again in a moment.",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.5,
+      "position": [
+        1296,
+        176
+      ],
+      "id": "48de1f92-51fb-449f-9ad7-d307a5b9e33d",
+      "name": "Send a message1",
+      "webhookId": "1012bff4-fe61-497e-9b00-327693b6773d",
+      "credentials": {
+        "slackApi": {
+          "id": "sWsZUemsnagUOxMv",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc",
+          "mode": "list",
+          "cachedResultName": "Week 5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Timestamp": "={{ $now }}",
+            "Question": "={{ $('Slack Trigger').item.json.text }}",
+            "Answer": "={{ $('HTTP Request').item.json.response }}",
+            "Tool Used": "={{ $('HTTP Request').item.json.tool_used }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Question",
+              "displayName": "Question",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Answer",
+              "displayName": "Answer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tool Used",
+              "displayName": "Tool Used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1648,
+        -64
+      ],
+      "id": "72b8b40c-7fdc-48c1-b4ea-7e13d25665f8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc",
+          "mode": "list",
+          "cachedResultName": "Week 5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "5b9dd163-494d-4708-ab62-54bb63a9d4bd",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const allRows = $('Get row(s) in sheet').all();\nconst lastFive = allRows.slice(-5);\n\nlet historyText = \"\";\nfor (const row of lastFive) {\n  historyText += `Previous Q: ${row.json.Question}\\nPrevious A: ${row.json.Answer}\\n\\n`;\n}\n\nconst currentMessage = $('Slack Trigger').item.json.text;\n\nconst fullMessage = historyText + `Current question: ${currentMessage}`;\n\nreturn [{ json: { message: fullMessage } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "3f4a3078-e5af-43e7-913c-e864b5608a11",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc",
+          "mode": "list",
+          "cachedResultName": "Week 5",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 995948021,
+          "mode": "list",
+          "cachedResultName": "Errors",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BPU7cojtvJrmpkZw4h1DZV1nHu0LRC1KzcXQ7mopsTc/edit#gid=995948021"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Time stamp": "={{ $now }}",
+            "Question": "={{ $('Slack Trigger').item.json.text }}",
+            "Error detail": "={{ $('HTTP Request').item.json.error?.message || 'Unknown error - check server logs' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Time stamp",
+              "displayName": "Time stamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Question",
+              "displayName": "Question",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Error detail",
+              "displayName": "Error detail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1648,
+        160
+      ],
+      "id": "76e82243-da73-4680-81d0-a11fd49f3a6a",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "65644d98-c8e9-445c-8e00-aae564fb1236",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "Li2EzCwkSKT9A0KF",
+  "tags": []
+}
