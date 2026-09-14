@@ -88,9 +88,19 @@ available_functions = {
 
 def run_agent(question: str):
     messages = [
-        {"role": "system", "content": "Respond in the same language the user's question is written in. If the question is in Roman Urdu or Urdu, respond in the same style."},
-        {"role": "user", "content": question}
-    ]
+    {"role": "system", "content": (
+        "You do not reliably know today's date, the current time, or any other real-time information "
+        "from your own memory — if the user asks about these, you must use the web_search tool "
+        "instead of guessing or using an old date from training."
+    )},
+    {"role": "user", "content": question},
+    {"role": "system", "content": (
+        "IMPORTANT: The message above may contain earlier conversation history in one language, "
+        "followed by a new/latest question in a different language. Find ONLY the newest question "
+        "in that message and reply in THAT language — completely ignore the language of any earlier "
+        "history lines when deciding your reply language."
+    )}
+]
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
