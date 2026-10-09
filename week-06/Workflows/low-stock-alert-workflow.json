@@ -1,0 +1,195 @@
+{
+  "name": "Week 6 - Low Stock Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            },
+            {
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9469035d-0dbf-4b28-b23c-5b84885e1806",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Project Week 6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "b1fa7db0-6c66-49ae-add9-96a434c54dea",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ccc79285-6cda-44f3-9985-f945e86178d9",
+              "leftValue": "={{ $json[\"Quantity in Stock\"] }}",
+              "rightValue": "={{ $json[\"Low Stock threshold\"] }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "d037a69f-1f40-4e39-8494-8b8a1f692048",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nlet message = \"⚠️ Low Stock Alert:\\n\";\nfor (const item of items) {\n  const p = item.json;\n  message += `- ${p[\"Part name\"]}: ${p[\"Quantity in Stock\"]} left (threshold: ${p[\"Low Stock threshold\"]})\\n`;\n}\n\nreturn [{ json: { alertMessage: message } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "fa259256-c236-4f3e-902b-f938667e5d25",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://7107.api.greenapi.com/waInstance710722741005/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "923107460149@c.us"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.alertMessage }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        896,
+        0
+      ],
+      "id": "fef410c5-f3ee-4495-8cfb-50b17aaa718e",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "d24fe1b1-9629-4826-b2bf-d9b4aff9dc2d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "aqP2j91WRCwFTdtv",
+  "tags": []
+}

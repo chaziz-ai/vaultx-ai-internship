@@ -1,0 +1,934 @@
+{
+  "name": "Week 6 Project",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "0698bfaa-3912-4f96-bba2-cf13003982b8",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        -32
+      ],
+      "id": "28d77863-c127-4c04-a267-84b1a46a3068",
+      "name": "Webhook",
+      "webhookId": "0698bfaa-3912-4f96-bba2-cf13003982b8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.messageData.textMessageData.textMessage }}",
+        "options": {
+          "systemMessage": "=Current date reference: {{ $json.dateContext }}\nCurrent time: {{ $json.currentTime }} (24-hour format, Pakistan time)\n\nCRITICAL RULE — LANGUAGE MATCHING (follow this above everything else, and override any pattern from earlier in the conversation):\nLook ONLY at the customer's MOST RECENT message — ignore the language used earlier in this conversation, including your own previous replies.\n- If that latest message is in English -> reply in English, even if the whole conversation so far was in Roman Urdu.\n- If that latest message is in Roman Urdu -> reply in Roman Urdu.\n- If it mixes both -> match that same mix.\nThis check must be done fresh for every single reply. Never continue in the previous reply's language just because the conversation has been going that way.\n\nExample: if the last 5 messages of the conversation were in Roman Urdu, and the customer's newest message is \"Can you book this for Monday 4pm?\" (English), your reply must be in English, e.g. \"Sure, I've booked it for Monday, 28 September at 4 PM.\" — NOT in Roman Urdu.\n\nCRITICAL RULE — BUSINESS HOURS:\nWhen the customer asks whether the shop is currently open (e.g. \"abhi shop open hai?\", \"is it open now?\"), compare \"Current time\" above against business hours (9:00-18:00, closed all day Friday). If outside these hours, or if today is Friday, tell them the shop is currently closed and mention the business hours or next opening day/time. Do not assume the shop is open without checking the current time.\n\nCRITICAL RULE — INVENTORY CHECK:\nWhenever the customer asks about the availability, stock, or presence of any part (e.g. \"is Engine Oil available?\", \"battery stock mein hai?\", \"oil available he?\", \"X hai kya?\"), you MUST call the Google Sheets tool to check the inventory before replying — even if a booking is already in progress or pending. Never answer an availability question from assumption or by ignoring it. After checking, tell the customer clearly whether the part is in stock, then continue with the booking flow if one was already underway.\n\nCRITICAL RULE — PART NAME MAPPING:\nWhen calling the Sheets tool, always map the customer's wording to the EXACT part name as listed in inventory — do not pass the customer's own phrasing directly. Valid part names are exactly: Engine Oil, Oil Filter, Air Filter, Spark Plug, Tube, Patch Kit, Battery, AC Gas, AC Filter.\nExamples: \"tyre tube\" or \"tube\" -> search \"Tube\". \"spark plugs\" -> search \"Spark Plug\". \"ac gas refill\" -> search \"AC Gas\".\nIf the customer's request doesn't clearly match one of these, ask them to clarify which part they mean.\n\nCRITICAL RULE — DATES:\nAlways find the exact date by matching the customer's relative day mention (e.g. \"4 din baad\", \"kal\", \"parso\", \"Wednesday\") against the table in \"Current date reference\" above. NEVER calculate, guess, or estimate a date yourself. When looking up a date, match the customer's day name or relative phrase to the corresponding table entry EXACTLY — copy both the weekday name and the date together from the same row. Never combine a weekday from one row with a date from a different row. This table-lookup rule applies equally when generating tool call arguments (e.g. booking_start, booking_end, After, Before) — not just in your text replies. Before calling any Calendar or Sheets tool with a date, re-check it against the table one more time, especially if the conversation has mentioned multiple different days. If a date entry in the table is marked [CLOSED - FRIDAY], the shop is closed that day — trust this tag directly rather than reasoning about which day of the week it is. If the customer mentions a day that is not covered by the table above (more than 29 days away), tell them you can only book within the next 30 days rather than guessing a date.\n\nCRITICAL RULE — OUTPUT FORMAT:\n- Never output curly braces, variable names, or any code/template syntax in your reply.\n- Never use double quotation marks (\" \") for emphasis — use *asterisks* instead (WhatsApp style).\n- Always write dates and times in plain natural language, e.g. *Friday, 25 September at 2 PM*.\n\nYou are the booking assistant for \"Vehicle Service Center.\"\n\nServices (bike time / car time):\n- Oil Change: 15/20 min\n- Washing: 20/30 min\n- Tyre Puncture/Tube Change: 10/15 min\n- General Service: 40/50 min\n- Battery Check/Replace: 15/20 min\n- AC Service/Gas Refill: car only, 30 min\n\nBusiness hours: 9am-6pm, closed on Friday.\n\nYour job: find out from the customer which service they want, their vehicle type (bike/car), and their preferred date/time. Use the table in \"Current date reference\" above to correctly resolve relative dates like \"kal\", \"parso\", \"Wednesday\", etc. Once you have all three, tell them you're checking availability before confirming.\n\nCRITICAL RULE — PARTS CONSUMPTION MAPPING:\nWhen calling the Calendar Create tool, you must fill the 'part_used' field using this EXACT mapping. Do not guess or reason about it — only copy from this table based on which service the customer confirmed:\n\n- Oil Change → \"Engine Oil, Oil Filter\"\n- Washing → \"none\"\n- Tyre Puncture → \"Patch Kit\"\n- Tube Change → \"Tube\"\n- General Service → \"none\"\n- Battery Check → \"none\"\n- Battery Replace → \"Battery\"\n- AC Service → \"AC Filter\"\n- AC Gas Refill → \"AC Gas\"\n\nIf the customer's exact service doesn't clearly match one row above, ask the customer to clarify which specific service before confirming the booking."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "9effb288-0ee0-4960-9546-266aac8ec315",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        256
+      ],
+      "id": "2940e75e-6e79-46dd-b586-dda97356eb13",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7lvEEqbMcnYpot6v",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ea45331bd4edf2698d507617da511733cb816b13f5aa895331d8aa2d54f0e58c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Bookings"
+        },
+        "timeMin": "={{ $fromAI('after', 'Start of the date/time range to check availability, in ISO 8601 format, based on what the customer requested', 'string') }}",
+        "timeMax": "={{ $fromAI('before', 'End of the date/time range to check availability, in ISO 8601 format — usually a few hours after after', 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        256
+      ],
+      "id": "2cc1bc62-d66f-4e6f-8549-f56cda42b2cd",
+      "name": "Get many events in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DcDpAFwZNPhzQQ6S",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Project Week 6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "=Part name",
+              "lookupValue": "={{ $fromAI('part_name', 'Exact part name to look up in inventory, e.g. Engine Oil or Oil Filter', 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        352
+      ],
+      "id": "5ad1f436-039b-4563-831d-eb8fdfdbd93a",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722741005/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Webhook').item.json.body.senderData.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('If').item.json.output.replace(/\\n/g, ' ') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2928,
+        32
+      ],
+      "id": "6e2bb8ab-6dbb-4de4-9f8b-e27c3c3f7e18",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "ea45331bd4edf2698d507617da511733cb816b13f5aa895331d8aa2d54f0e58c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Bookings"
+        },
+        "start": "={{ $fromAI('booking_start', 'Confirmed start date/time of the booking in ISO 8601 format, based on what the customer confirmed', 'string') }}",
+        "end": "={{ $fromAI('booking_end', 'Confirmed end date/time of the booking — start time plus the service duration', 'string') }}",
+        "additionalFields": {
+          "description": "={{ $fromAI('part_used', 'Which inventory part(s) this booking will consume, comma-separated exactly as named in inventory (Engine Oil, Oil Filter, Tube, Patch Kit, Battery, AC Gas, AC Filter) — or the word none if no part is consumed (Washing, General Service, Battery Check)', 'string') }}",
+          "summary": "={{ $fromAI('event_title', 'Short title for the booking, e.g. Oil Change - Bike (no customer name needed)', 'string') }} - {{ $('Webhook').item.json.body.senderData.chatId }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        384
+      ],
+      "id": "7e37c2ed-1080-49d8-80bf-07754df44281",
+      "name": "Create an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DcDpAFwZNPhzQQ6S",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.body.senderData.chatId }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        64,
+        352
+      ],
+      "id": "2eed14f5-91ce-48dd-b5b8-5efec033ec4c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "23d4606f-6f23-43e6-a600-d935ff7b3da8",
+              "name": "dateContext",
+              "value": "={{ Array.from({length: 30}, (_, i) => {\n  const d = $now.plus({days: i});\n  const tag = d.toFormat('ccc') === 'Fri' ? ' [CLOSED - FRIDAY]' : '';\n  return `+${i} day(s): ${d.toFormat('cccc, yyyy-MM-dd')}${tag}`;\n}).join('\\n') }}",
+              "type": "string"
+            },
+            {
+              "id": "c04a0563-1b5b-4995-8c9a-d42bfc097372",
+              "name": "currentTime",
+              "value": "={{ $now.setZone('Asia/Karachi').toFormat('HH:mm') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -32,
+        -48
+      ],
+      "id": "52e933d4-ccc1-4e5c-89ef-97f7fca2ce14",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4cb970a2-7c8d-490f-a362-e9505d7986d2",
+              "leftValue": "={{ $json.partUsed }}",
+              "rightValue": "none",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1632,
+        16
+      ],
+      "id": "c649cedd-10a5-47f1-b524-615c103dbca7",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=partsArray",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        -576
+      ],
+      "id": "93692cf7-7f42-4af3-b6ed-4b99f8cb9145",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Project Week 6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Part name",
+              "lookupValue": "={{ $json.partsArray }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1776,
+        -608
+      ],
+      "id": "ace42d09-6325-426e-9d3e-70ded5cb2eaa",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const currentQty = parseInt($input.item.json['Quantity in Stock']);\nconst newQty = currentQty - 1;\n\nreturn {\n  json: {\n    partName: $input.item.json['Part name'],\n    newQuantity: newQty,\n    rowNumber: $input.item.json.row_number\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2128,
+        -624
+      ],
+      "id": "89f26592-03fc-4462-9dba-bbfe0b93aa2d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Project Week 6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.rowNumber }}",
+            "Quantity in Stock": "={{ $json.newQuantity }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Part name",
+              "displayName": "Part name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Quantity in Stock",
+              "displayName": "Quantity in Stock",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Low Stock threshold",
+              "displayName": "Low Stock threshold",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2464,
+        -528
+      ],
+      "id": "3c04fa56-043b-4a4f-97a7-9ad59bf47d4f",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Project Week 6",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1163011826,
+          "mode": "list",
+          "cachedResultName": "Booking Log",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oGSN_8UjW6lpmxURuZMocXMFnIEguj-2QRX5QFpNFYc/edit#gid=1163011826"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.setZone('Asia/Karachi').toFormat('dd MMM yyyy, HH:mm') }}",
+            "Service": "={{ $('Code in JavaScript1').item.json.bookingSummary }}",
+            "Part Used": "={{ $('Split Out').item.json.partsArray }}",
+            "Quantity Used": "1",
+            "Customer Number": "={{ $('Webhook').item.json.body.senderData.chatId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Part Used",
+              "displayName": "Part Used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Quantity Used",
+              "displayName": "Quantity Used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Customer Number",
+              "displayName": "Customer Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2784,
+        -320
+      ],
+      "id": "c3d1e8df-ab56-438b-9667-b5fb4bacf01d",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let partUsed = 'none';\nlet isFridayViolation = false;\nlet debugError = '';\nlet bookingSummary = '';\nlet bookingStartRaw = '';\n\ntry {\n  const customerChatId = $('Webhook').item.json.body.senderData.chatId;\n  const allEvents = $input.all();\n  \n  const matchingEvents = allEvents.filter(item => \n    item.json.summary && item.json.summary.includes(customerChatId)\n  );\n  \n  if (matchingEvents.length === 0) {\n    throw new Error('No matching event found for this customer');\n  }\n  \n  matchingEvents.sort((a, b) => new Date(a.json.created) - new Date(b.json.created));\n  const calendarData = matchingEvents[matchingEvents.length - 1].json;\n  \n  partUsed = calendarData.description;\n  bookingSummary = calendarData.summary;\n  \n  bookingStartRaw = calendarData.start.dateTime;\n  const bookingDate = new Date(bookingStartRaw);\n  const dayName = bookingDate.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'Asia/Karachi' });\n  \n  if (dayName === 'Friday') {\n    isFridayViolation = true;\n  }\n} catch (error) {\n  partUsed = 'none';\n  debugError = error.message;\n}\n\nreturn {\n  json: {\n    output: $('AI Agent').item.json.output,\n    partUsed: partUsed,\n    partsArray: partUsed === 'none' ? [] : partUsed.split(', '),\n    isFridayViolation: isFridayViolation,\n    debugError: debugError,\n    bookingSummary: bookingSummary,\n    bookingDateTime: bookingStartRaw\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        16
+      ],
+      "id": "61fe5451-9045-4fea-bc46-55cafd57e6cf",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5314ed00-8f18-4b42-9236-3a9e221a7529",
+              "leftValue": "={{ $json.isFridayViolation }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1088,
+        176
+      ],
+      "id": "5695a56a-3f07-47d3-8027-1c4a9ab021b4",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "ea45331bd4edf2698d507617da511733cb816b13f5aa895331d8aa2d54f0e58c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Bookings"
+        },
+        "eventId": "={{ $('Google Calendar Create').first().json.id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        -272
+      ],
+      "id": "78d5d5d2-217a-4b60-9cdf-a9698bee0d15",
+      "name": "Delete an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DcDpAFwZNPhzQQ6S",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "84c1e303-2e51-46da-932b-8b735fc6f19f",
+              "name": "output",
+              "value": "Sorry, this booking fell on a Friday, which is our closed day, so it has been automatically cancelled. Please choose a different day and try again.  (Maazrat chahte hain, yeh booking Friday ko thi jo hamari shop ke liye band din hai, isliye cancel kar di gayi hai. Baraye meherbani koi aur din select karein.)",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1536,
+        -272
+      ],
+      "id": "fc4f8d44-a1d1-4f58-a6ac-661285b1985b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "ea45331bd4edf2698d507617da511733cb816b13f5aa895331d8aa2d54f0e58c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Vehicle Service Center Bookings"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.toISO() }}",
+        "timeMax": "={{ $now.plus({days: 31}).toISO() }}",
+        "options": {
+          "orderBy": "updated"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        0
+      ],
+      "id": "d16eda62-6408-4dfc-a09f-da859665a4c8",
+      "name": "Get many events",
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DcDpAFwZNPhzQQ6S",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "vitally-mutiny-goldfish.ngrok-free.dev",
+            "user-agent": "GREEN-API",
+            "content-length": "471",
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json; charset=utf-8",
+            "x-forwarded-for": "64.226.111.11",
+            "x-forwarded-host": "vitally-mutiny-goldfish.ngrok-free.dev",
+            "x-forwarded-proto": "https",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "typeWebhook": "incomingMessageReceived",
+            "idMessage": "ACCB187A4513F6B35EF482B5DDF79877",
+            "instanceData": {
+              "idInstance": 710722741005,
+              "wid": "923107460149@c.us",
+              "typeInstance": "whatsapp"
+            },
+            "timestamp": 1789835833,
+            "senderData": {
+              "chatId": "TEST-SESSION-001@c.us",
+              "sender": "923276374572@c.us",
+              "senderName": "🫠bE~ HapPy",
+              "senderContactName": "",
+              "chatName": "🫠bE~ HapPy"
+            },
+            "messageData": {
+              "typeMessage": "textMessage",
+              "textMessageData": {
+                "textMessage": "Thursday ko booking available he?"
+              }
+            }
+          },
+          "webhookUrl": "http://localhost:5678/webhook/0698bfaa-3912-4f96-bba2-cf13003982b8",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Get many events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Delete an event",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "53b6bee1-4b4d-4418-8d25-e563a94f3bdd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "9pPZ82d9yg2arvjY",
+  "tags": []
+}
