@@ -1,0 +1,150 @@
+{
+  "name": "FinalProject-WF4 - Weekly Report",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f5641f65-ea18-4c8c-949c-b6f123a6c793",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all().map(i => i.json);\nconst weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;\nconst week = rows.filter(r => new Date(r.created_at).getTime() >= weekAgo);\n\nconst total = week.length;\nconst hot = week.filter(r => r.score === 'hot').length;\nconst warm = week.filter(r => r.score === 'warm').length;\nconst cold = week.filter(r => r.score === 'cold').length;\nconst pipeline = week.reduce((s, r) => s + Number(r.estimate_pkr || 0), 0);\nconst fu1 = week.filter(r => r.status === 'followup1').length;\nconst fu2 = week.filter(r => r.status === 'followup2').length;\nconst money = 'Rs ' + pipeline.toLocaleString('en-US');\n\nconst box = (label, value, color) =>\n  `<td style=\"padding:14px;text-align:center;background:${color};color:#fff;border-radius:8px\">\n     <div style=\"font-size:26px;font-weight:bold\">${value}</div>\n     <div style=\"font-size:12px\">${label}</div></td>`;\n\nconst html = `\n<div style=\"font-family:Arial,sans-serif;max-width:560px;margin:auto;border:1px solid #e0e0e0;border-radius:10px;overflow:hidden\">\n  <div style=\"background:#f59e0b;padding:18px;color:#fff\">\n    <h2 style=\"margin:0\">SolarFlow Weekly Report</h2>\n    <div style=\"font-size:13px\">Last 7 days</div>\n  </div>\n  <div style=\"padding:18px\">\n    <table width=\"100%\" cellspacing=\"8\"><tr>\n      ${box('Total Leads', total, '#2563eb')}\n      ${box('Hot', hot, '#dc2626')}\n      ${box('Warm', warm, '#f97316')}\n      ${box('Cold', cold, '#6b7280')}\n    </tr></table>\n    <h3 style=\"margin-bottom:6px\">Quote Value</h3>\n    <div style=\"font-size:24px;font-weight:bold;color:#16a34a\">${money}</div>\n    <h3 style=\"margin-bottom:6px\">Follow-ups</h3>\n    <table width=\"100%\" cellpadding=\"8\" style=\"border-collapse:collapse\">\n      <tr style=\"background:#f3f4f6\"><td>Follow-up 1 sent</td><td align=\"right\"><b>${fu1}</b></td></tr>\n      <tr><td>Follow-up 2 sent</td><td align=\"right\"><b>${fu2}</b></td></tr>\n    </table>\n  </div>\n  <div style=\"background:#f9fafb;padding:10px;text-align:center;font-size:11px;color:#888\">\n    Automated by SolarFlow (n8n)\n  </div>\n</div>`;\n\nreturn [{ json: { total, hot, warm, cold, pipeline, fu1, fu2, html } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "37055d65-1bcb-445c-abba-5f1342b9cb1d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "sendTo": "mailforaziz784@gmail.com",
+        "subject": "SolarFlow Weekly Report",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "3869fa90-f19a-472a-898f-12107a2543cd",
+      "name": "Send a message",
+      "webhookId": "8aca9cc9-ab06-4cf4-811d-0d35a569a9ce",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "inwweg30JvMcVnUW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "25ccd267-9be7-4d55-9efa-186be1f87f58",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "l05XJHUzSx82lemD",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "0573f21f-7f2e-43a5-82a1-21a301ce39f0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "jIpfe9ncNmcy2PYg",
+  "tags": []
+}

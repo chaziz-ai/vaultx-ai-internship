@@ -1,0 +1,332 @@
+{
+  "name": "FinalProject-WF3 - Follow-ups",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "fe5c992b-840e-44c6-8b4f-da4a8197a79f",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// DEMO thresholds (minutes). Real use: 1 din / 3 din\nconst T1 = 1;\nconst T2 = 2;\n\nconst now = Date.now();\nconst out = [];\n\nfor (const item of $input.all()) {\n  const r = item.json;\n  const mins = (t) => (now - new Date(t).getTime()) / 60000;\n  const en = r.language === 'en';\n  let next = null, msg = null;\n\n  if (r.status === 'new' && mins(r.created_at) >= T1) {\n    next = 'followup1';\n    msg = en\n      ? `Hi ${r.name}! You inquired about solar recently. Your ${r.system_size_kw} kW system estimate was Rs ${r.estimate_pkr}. Let us know if you have any questions, as prices are rising fast.`\n      : `Assalam o Alaikum ${r.name}! Aap ne solar ke liye inquiry ki thi. Aap ka ${r.system_size_kw} kW system ka estimate Rs ${r.estimate_pkr} tha. Koi sawal ho to bataiye, rates tezi se barh rahe hain.`;\n  } else if (r.status === 'followup1' && r.last_followup && mins(r.last_followup) >= T2) {\n    next = 'followup2';\n    msg = en\n      ? `${r.name}, have you decided about solar? We can arrange a free site visit. Reply \"VISIT\".`\n      : `${r.name}, kya aap ne solar ke baare mein faisla kiya? Hum free site visit arrange kar sakte hain. Reply karein \"VISIT\".`;\n  }\n\n  if (next) out.push({ json: { ...r, next_status: next, message: msg, chatId: `${r.phone}@c.us` } });\n}\nreturn out;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "7c1eac9d-70bf-4035-84b2-a63e593cfa8c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        640,
+        0
+      ],
+      "id": "dff06a7a-a4f4-4084-ae8d-29b40572078c",
+      "name": "Send Estimate"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Code in JavaScript').item.json.lead_id }}",
+            "status": "={{ $('Code in JavaScript').item.json.next_status }}",
+            "last_followup": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "monthly_bill_pkr",
+              "displayName": "monthly_bill_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "load_details",
+              "displayName": "load_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "system_size_kw",
+              "displayName": "system_size_kw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estimate_pkr",
+              "displayName": "estimate_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_followup",
+              "displayName": "last_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        864,
+        0
+      ],
+      "id": "d6ca546e-c5c5-4da5-8f9f-ab6bb6c30074",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        0
+      ],
+      "id": "5675b1f9-fa24-4c6d-9a29-84319e537c4f",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send Estimate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Estimate": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "l05XJHUzSx82lemD",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "f0673bba-4875-4ef7-99e9-84b5601115bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "uHmTkpAT3MpAkTmD",
+  "tags": []
+}

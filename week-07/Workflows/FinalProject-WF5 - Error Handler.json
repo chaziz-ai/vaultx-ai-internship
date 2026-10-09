@@ -1,0 +1,118 @@
+{
+  "name": "FinalProject-WF5 - Error Handler",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3b6598bd-6bd4-4201-80a5-0788d7e11c91",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2144083336,
+          "mode": "list",
+          "cachedResultName": "Errors",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=2144083336"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "time": "={{ $now.toISO() }}",
+            "error_message": "={{ $json.execution.error.message }}",
+            "workflow": "={{ $json.workflow.name }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "time",
+              "displayName": "time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "workflow",
+              "displayName": "workflow",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "84e2bda7-2422-4972-8cb5-e6b33917e8e2",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "82ae254f-abe5-4009-814f-315ef57cdd6b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "l05XJHUzSx82lemD",
+  "tags": []
+}

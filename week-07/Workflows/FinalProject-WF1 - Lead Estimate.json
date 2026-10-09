@@ -1,0 +1,1805 @@
+{
+  "name": "FinalProject-WF1 - Lead Estimate",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $now.toMillis() }}",
+            "created_at": "={{ $now.toISO() }}",
+            "name": "={{ $('Edit Fields').first().json.name }}",
+            "phone": "={{ $('Edit Fields').first().json.chatId.replace('@c.us','') }}",
+            "city": "={{ $('Information Extractor').first().json.output.city }}",
+            "monthly_bill_pkr": "={{ $('Information Extractor').first().json.output.bill }}",
+            "load_details": "={{ $('Information Extractor').first().json.output.load_details }}",
+            "estimate_pkr": "={{ $json.total }}",
+            "status": "new",
+            "system_size_kw": "={{ $json.kw }}",
+            "score": "={{ $json.score }}",
+            "language": "={{ $('Information Extractor').first().json.output.language }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "monthly_bill_pkr",
+              "displayName": "monthly_bill_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "load_details",
+              "displayName": "load_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "system_size_kw",
+              "displayName": "system_size_kw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estimate_pkr",
+              "displayName": "estimate_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_followup",
+              "displayName": "last_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3760,
+        544
+      ],
+      "id": "6641f358-9156-4917-a513-8b5197c792b7",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "solar-lead",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "055654f7-c83a-4008-964e-b49cf381d4ea",
+      "name": "Webhook",
+      "webhookId": "13cb60e1-831d-4878-99b4-ad57e528ef76"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e94d6543-56d9-491c-86fd-466f9e68f2ae",
+              "name": "chatId",
+              "value": "={{ $json.body.senderData.chatId }}",
+              "type": "string"
+            },
+            {
+              "id": "3961c9fb-e85b-4b6f-931f-af2ce000168a",
+              "name": "name",
+              "value": "={{ $json.body.senderData.senderName }}",
+              "type": "string"
+            },
+            {
+              "id": "f3d3121d-598d-4bc3-b774-bff74e7bb027",
+              "name": "text",
+              "value": "={{ $json.body.messageData.textMessageData?.textMessage || $json.body.messageData.extendedTextMessageData?.text || '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        608,
+        0
+      ],
+      "id": "f17e5725-b1b5-44a0-90fe-5455c053e0b9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const bill = $('Information Extractor').first().json.output.bill;\nconst rates = {};\nfor (const i of $input.all()) rates[i.json.item] = Number(i.json.rate_pkr);\n\nconst units = bill / 50;\nconst kw = Math.ceil((units / 120) * 2) / 2; // 0.5 kW steps\n\nconst panels = kw * 1000 * rates.panel;\nconst inverter = kw * rates.inverter;\nconst structure = kw * rates.structure;\nconst installation = kw * rates.installation;\nconst net = rates.net_metering;\nconst total = panels + inverter + structure + installation + net;\nconst score = bill >= 40000 ? 'hot' : bill >= 20000 ? 'warm' : 'cold';\n\nreturn [{ json: { bill, kw, panels, inverter, structure, installation, net_metering: net, total, score } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3376,
+        544
+      ],
+      "id": "7c0cd30c-0f79-4fad-89d1-ae09f1e6d776",
+      "name": "Calculation"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "fc01437a-2298-458e-80bb-dacfdde7aad3",
+              "leftValue": "={{ $json.body.typeWebhook }}",
+              "rightValue": "incomingMessageReceived",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        400,
+        0
+      ],
+      "id": "dd401ce0-5c46-4881-aac6-30e09877e9f5",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cba1de91-32fc-41dc-ab5a-bce6f55c57e1",
+              "leftValue": "={{ $json.body.senderData.chatId }}",
+              "rightValue": "923276374572@c.us",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        0
+      ],
+      "id": "bd58ed54-f142-44dd-9a36-6b01745f9fb6",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').first().json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Information Extractor').first().json.output.language === 'en'\n  ? `Hi ${$('Edit Fields').first().json.name}!\\nBased on your bill (Rs ${$('Calculation').first().json.bill}):\\n\\nSolar system: ${$('Calculation').first().json.kw} kW\\nEstimated cost: Rs ${$('Calculation').first().json.total.toLocaleString('en-US')}\\n\\nThis is an approximate estimate.`\n    : `Assalam O Alaikum ${$('Edit Fields').first().json.name}!\\nAapke bill (Rs ${$('Calculation').first().json.bill}) ke hisaab se:\\n\\nSolar system: ${$('Calculation').first().json.kw} kW\\nEstimated cost: Rs ${$('Calculation').first().json.total.toLocaleString('en-US')}\\n\\nYeh approximate estimate hai.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        4144,
+        544
+      ],
+      "id": "1d094965-ab48-41ba-8813-65e859325272",
+      "name": "Send Estimate"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').first().json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Information Extractor').first().json.output.language === 'en'   ? `Hi! To prepare your estimate, please tell us your monthly electricity bill, your city, and what appliances you run (AC, fridge, fans). Example: My bill is 50000, in Bahawalpur, 3 ACs and 2 fridges`   : `Assalam o Alaikum! Estimate ke liye apna monthly bijli ka bill, city aur kya kya chalta hai (AC, fridge, fans) batayein. Jaise: Mera bill 50000 hai, Bahawalpur mein, 3 AC aur 2 fridge hain` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        3008,
+        784
+      ],
+      "id": "455a4426-599a-44b0-9d44-0794316592e6",
+      "name": "Send Estimate1"
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Edit Fields').item.json.text }}",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "bill",
+              "type": "number",
+              "description": "Monthly electricity bill in PKR. Leave empty if the customer did not mention a bill. Never guess."
+            },
+            {
+              "name": "city",
+              "description": "customer's city"
+            },
+            {
+              "name": "load_details",
+              "description": "appliances such as AC, fridge, fans"
+            },
+            {
+              "name": "language",
+              "description": "Language the customer wrote in. Return \"en\" if English, \"ur\" if Roman Urdu or Urdu.",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        2224,
+        560
+      ],
+      "id": "954fa89f-0c67-4d84-a9fe-d47d552d39e4",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2240,
+        880
+      ],
+      "id": "99c5371e-b6d6-458a-92c9-c7224c32bed0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7lvEEqbMcnYpot6v",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1162561948,
+          "mode": "list",
+          "cachedResultName": "Price_List",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1162561948"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2976,
+        544
+      ],
+      "id": "fe54f129-716b-4797-8946-a346999612e1",
+      "name": "Get Price_List",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b8d66a71-8ca4-4eaf-bbe3-f3019b59ae2c",
+              "leftValue": "={{ $json.output.bill }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "10f9af39-2952-429e-9380-58e8e98fcee5",
+              "leftValue": "={{ $json.output.city }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9f32a55e-a406-4e65-ae57-291474954109",
+              "leftValue": "={{ $('Edit Fields').first().json.text }}",
+              "rightValue": "\\d",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2656,
+        560
+      ],
+      "id": "794937d9-5d25-422d-968e-e566926166a4",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"lead_id\": \"{{ $('Append row in sheet').first().json.lead_id }}\",\n  \"name\": \"{{ $('Edit Fields').first().json.name }}\",\n  \"phone\": \"{{ $('Edit Fields').first().json.chatId.replace('@c.us','') }}\",\n  \"city\": \"{{ $('Information Extractor').first().json.output.city }}\",\n  \"kw\": {{ $('Calculation').first().json.kw }},\n  \"panels\": {{ $('Calculation').first().json.panels }},\n  \"inverter\": {{ $('Calculation').first().json.inverter }},\n  \"structure\": {{ $('Calculation').first().json.structure }},\n  \"installation\": {{ $('Calculation').first().json.installation }},\n  \"net_metering\": {{ $('Calculation').first().json.net_metering }},\n  \"total\": {{ $('Calculation').first().json.total }},\n  \"language\": \"{{ $('Information Extractor').first().json.output.language }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        4464,
+        544
+      ],
+      "id": "a2851aba-a000-4006-9f0c-2044734fbdc5",
+      "name": "Prepare Quote Data"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "5pGABZLFNAOU7lwc",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/5pGABZLFNAOU7lwc",
+          "cachedResultName": "FinalProject-WF2 - Quote PDF"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        4848,
+        544
+      ],
+      "id": "8ecb8973-d471-4a98-93c5-0e347ecf55c7",
+      "name": "Call 'FinalProject-WF2 - Quote PDF'"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f3a361d7-a875-4b13-a405-031ca3cfeeef",
+              "leftValue": "={{ $json.lead_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1504,
+        0
+      ],
+      "id": "1fe08b47-dddc-4850-98d8-f9f4348f3456",
+      "name": "Existing lead?"
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $('Edit Fields').item.json.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "interested",
+              "description": "customer wants to proceed, asks for a site visit or more details, or says yes (e.g. \"haan karwa do\", \"yes, I'm interested\", \"send details\")"
+            },
+            {
+              "category": "negotiating",
+              "description": "says the price is high, asks for a discount, or wants time to think (e.g. \"bohat mehnga hai\", \"too expensive\", \"let me think\")"
+            },
+            {
+              "category": "not_interested",
+              "description": "says no, asks to stop (e.g. \"nahi chahiye\", \"not interested\", \"don't message me\")"
+            },
+            {
+              "category": "new_estimate",
+              "description": "customer gives a new or changed bill, wants more or fewer panels, a bigger or smaller system, or a new estimate (e.g. \"mera bill kam ho gaya\", \"I want to add more solar\", \"estimate again for 30000 bill\")"
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1872,
+        -48
+      ],
+      "id": "b044110b-a27c-452a-b1d5-2d5bf37ba741",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2016,
+        256
+      ],
+      "id": "3ac9d07b-6c36-4367-b95f-fdcd744975b9",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "7lvEEqbMcnYpot6v",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Latest Row').first().json.lead_id }}",
+            "status": "interested"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "monthly_bill_pkr",
+              "displayName": "monthly_bill_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "load_details",
+              "displayName": "load_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "system_size_kw",
+              "displayName": "system_size_kw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estimate_pkr",
+              "displayName": "estimate_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "last_followup",
+              "displayName": "last_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "language",
+              "displayName": "language",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2416,
+        -432
+      ],
+      "id": "bbd7cfb8-cb69-4ac2-add7-cc67e626133a",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{$('Latest Row').item.json.lead_id }}",
+            "status": "negotiating"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "monthly_bill_pkr",
+              "displayName": "monthly_bill_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "load_details",
+              "displayName": "load_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "system_size_kw",
+              "displayName": "system_size_kw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estimate_pkr",
+              "displayName": "estimate_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_followup",
+              "displayName": "last_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2416,
+        -160
+      ],
+      "id": "4de0523a-f175-4d01-97e3-b7b442c4845e",
+      "name": "Update row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_id": "={{ $('Latest Row').item.json.lead_id }}",
+            "status": "not_interested"
+          },
+          "matchingColumns": [
+            "lead_id"
+          ],
+          "schema": [
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "city",
+              "displayName": "city",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "monthly_bill_pkr",
+              "displayName": "monthly_bill_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "load_details",
+              "displayName": "load_details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "system_size_kw",
+              "displayName": "system_size_kw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estimate_pkr",
+              "displayName": "estimate_pkr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "last_followup",
+              "displayName": "last_followup",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2416,
+        80
+      ],
+      "id": "991cdc2f-342a-44b7-b537-1cdf7933a57f",
+      "name": "Update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').first().json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Latest Row').first().json.language === 'en'\n  ? `Thanks for your message! We have passed it to our team and they will contact you shortly.`\n  : `Shukriya! Hum ne aap ka message hamari team ko bhej diya hai, wo jald aap se rabta karegi.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2720,
+        336
+      ],
+      "id": "2536e0f2-f468-499c-b22a-b0bdd1d7da65",
+      "name": "Send Other Reply"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all();\nif (rows.length === 0) return [{ json: {} }];\nrows.sort((a, b) => new Date(b.json.created_at) - new Date(a.json.created_at));\nreturn [rows[0]];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        0
+      ],
+      "id": "65361bde-1535-454b-af20-2e47f0378761",
+      "name": "Latest Row"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').first().json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Latest Row').first().json.language === 'en'\n  ? `Great! Our team will contact you shortly to arrange your free site visit.`\n  : `Zabardast! Hamari team jald aap se rabta karke free site visit arrange karegi.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2704,
+        -432
+      ],
+      "id": "b2c32cbc-08e3-488c-9878-42900380f5f2",
+      "name": "Reply Interested"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').first().json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Latest Row').first().json.language === 'en'\n  ? `Thanks for letting us know. Our team will get in touch to discuss options that fit your budget.`\n  : `Shukriya! Hamari team aap ke budget ke mutabiq options par baat karne ke liye rabta karegi.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2704,
+        -160
+      ],
+      "id": "a2b64c03-0db1-4bc2-b453-d4aa8431047a",
+      "name": "Reply Negotiating"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').first().json.chatId }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $('Latest Row').first().json.language === 'en'\n  ? `No problem, thank you for your time. Message us anytime if you change your mind.`\n  : `Koi baat nahi, shukriya. Agar mann badle to hamein message kar dena.` }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        2704,
+        80
+      ],
+      "id": "29831947-c40a-4a0e-8f1f-142f8b384a2c",
+      "name": "Reply Not Interested"
+    },
+    {
+      "parameters": {
+        "sendTo": "mailforaziz784@gmail.com",
+        "subject": "New customer message - needs follow-up",
+        "emailType": "text",
+        "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nPlease contact this customer.' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2432,
+        336
+      ],
+      "id": "f4f13ef5-4502-4788-852c-ae54cd582a0c",
+      "name": "Notify Owner",
+      "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "inwweg30JvMcVnUW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mailforaziz784@gmail.com",
+        "subject": "HOT LEAD - customer wants a site visit",
+        "emailType": "text",
+        "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nCity: ' + $('Latest Row').first().json.city + '\\nEstimate: Rs ' + $('Latest Row').first().json.estimate_pkr + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nThis customer wants a site visit. Please contact them.' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3024,
+        -432
+      ],
+      "id": "6b735bae-1923-4739-8258-2a11a6cada12",
+      "name": "Notify Owner Interested",
+      "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "inwweg30JvMcVnUW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mailforaziz784@gmail.com",
+        "subject": "Customer wants a better price",
+        "emailType": "text",
+        "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nCity: ' + $('Latest Row').first().json.city + '\\nEstimate: Rs ' + $('Latest Row').first().json.estimate_pkr + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nThis customer is negotiating on price. Please call and discuss options.' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3024,
+        -160
+      ],
+      "id": "382b741e-d93d-450d-a70a-6cfceff42dcb",
+      "name": "Notify Owner Negotiating",
+      "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "inwweg30JvMcVnUW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mailforaziz784@gmail.com",
+        "subject": "Customer not interested",
+        "emailType": "text",
+        "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nCity: ' + $('Latest Row').first().json.city + '\\nEstimate: Rs ' + $('Latest Row').first().json.estimate_pkr + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nThis customer said no. No more follow-ups will be sent.' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3024,
+        80
+      ],
+      "id": "053f52dd-a353-4963-b37d-7a8091fbc3f1",
+      "name": "Notify Owner Not Interested",
+      "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "inwweg30JvMcVnUW",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4",
+          "mode": "list",
+          "cachedResultName": "SolarFlow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1061227203,
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dfQt0pt2SHcil8oiqAZxUJQNMwcD_R4DKMK5BQkMi_4/edit#gid=1061227203"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "phone",
+              "lookupValue": "={{ $('Edit Fields').item.json.chatId.replace('@c.us', '') }}"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": false
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        912,
+        0
+      ],
+      "id": "3ec8008f-7f49-414c-b900-e0ccf295816f",
+      "name": "Get row(s) in sheet1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DRbZ1ij8ED5eKiM3",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculation": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send Estimate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Price_List": {
+      "main": [
+        [
+          {
+            "node": "Calculation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Get Price_List",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Estimate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Estimate": {
+      "main": [
+        [
+          {
+            "node": "Prepare Quote Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Quote Data": {
+      "main": [
+        [
+          {
+            "node": "Call 'FinalProject-WF2 - Quote PDF'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Existing lead?": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Owner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Latest Row": {
+      "main": [
+        [
+          {
+            "node": "Existing lead?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Reply Interested",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Reply Negotiating",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Reply Not Interested",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Owner": {
+      "main": [
+        [
+          {
+            "node": "Send Other Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply Interested": {
+      "main": [
+        [
+          {
+            "node": "Notify Owner Interested",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply Negotiating": {
+      "main": [
+        [
+          {
+            "node": "Notify Owner Negotiating",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply Not Interested": {
+      "main": [
+        [
+          {
+            "node": "Notify Owner Not Interested",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Latest Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "l05XJHUzSx82lemD",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "3ef2c31f-6726-42cd-8069-3be41730b331",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "8qSTdT0nLfhVU6S3",
+  "tags": []
+}

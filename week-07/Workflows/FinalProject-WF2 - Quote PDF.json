@@ -1,0 +1,375 @@
+{
+  "name": "FinalProject-WF2 - Quote PDF",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f1e8e2d4-a56a-41fd-8e52-4f5c2c137b88",
+              "name": "quote_no",
+              "value": "=Q-{{ String($json.lead_id).slice(-6) }}",
+              "type": "string"
+            },
+            {
+              "id": "c6f0d2bb-ef7b-48d8-962a-14d1f04f0857",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "578302a7-c316-4112-a855-6a60321b8ae2",
+              "name": "phone",
+              "value": "={{ $json.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "75a047c4-a658-4fd2-be7d-ac8585e9ff1a",
+              "name": "city",
+              "value": "={{ $json.city }}",
+              "type": "string"
+            },
+            {
+              "id": "5fdf1c9b-fd1f-4800-8267-9151e7088fb8",
+              "name": "kw",
+              "value": "={{ $json.kw }}",
+              "type": "number"
+            },
+            {
+              "id": "aaeaeeaf-719f-4ea4-b34f-816e93e78ff6",
+              "name": "panels",
+              "value": "={{ $json.panels }}",
+              "type": "number"
+            },
+            {
+              "id": "99310794-a1ec-4106-93cf-2bd90cff6aae",
+              "name": "inverter",
+              "value": "={{ $json.inverter }}",
+              "type": "number"
+            },
+            {
+              "id": "5d3a058c-652f-44ce-9c79-38b735a16138",
+              "name": "structure",
+              "value": "={{ $json.structure }}",
+              "type": "number"
+            },
+            {
+              "id": "f3c24102-ce3d-4450-86ad-46c94addcf77",
+              "name": "installation",
+              "value": "={{ $json.installation }}",
+              "type": "number"
+            },
+            {
+              "id": "af2df116-3994-40a7-a164-8d0448c4177e",
+              "name": "net_metering",
+              "value": "={{ $json.net_metering }}",
+              "type": "number"
+            },
+            {
+              "id": "4a4ed3c5-0abf-4db0-8ec6-bf1421a17adc",
+              "name": "total",
+              "value": "={{ $json.total }}",
+              "type": "number"
+            },
+            {
+              "id": "30d72b61-ff0d-4ee3-9353-1e596fd0b199",
+              "name": "date",
+              "value": "={{ $now.toFormat('dd LLL yyyy') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f9b628c7-104a-4288-b127-936dd190fcd6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1WvdwqDOYABl5FGGC7U7ZJPXrhhbWcRKDzKlMQq1xL-c",
+          "mode": "list",
+          "cachedResultName": "Quote_Template (1)",
+          "cachedResultUrl": "https://docs.google.com/document/d/1WvdwqDOYABl5FGGC7U7ZJPXrhhbWcRKDzKlMQq1xL-c/edit?usp=drivesdk"
+        },
+        "name": "=Quote {{ $json.quote_no }} - {{ $json.name }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "fe206bd1-ed11-4483-8ee9-587032597f37",
+      "name": "Copy file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "CgbqBXud8348KYi2",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "[[quote_no]]",
+              "replaceText": "={{ $('Edit Fields').item.json.quote_no }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[name]]",
+              "replaceText": "={{ $('Edit Fields').item.json.name }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[total]]",
+              "replaceText": "={{ $('Edit Fields').item.json.total.toLocaleString('en-US') }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[date]]",
+              "replaceText": "={{ $('Edit Fields').item.json.date }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[phone]]",
+              "replaceText": "={{ $('Edit Fields').item.json.phone }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[city]]",
+              "replaceText": "={{ $('Edit Fields').item.json.city }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[kw]]",
+              "replaceText": "={{ String($('Edit Fields').item.json.kw) }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[panels]]",
+              "replaceText": "={{ $('Edit Fields').item.json.panels.toLocaleString('en-US') }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[inverter]]",
+              "replaceText": "={{ $('Edit Fields').item.json.inverter.toLocaleString('en-US') }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[structure]]",
+              "replaceText": "={{ $('Edit Fields').item.json.structure.toLocaleString('en-US') }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[installation]]",
+              "replaceText": "={{ $('Edit Fields').item.json.installation.toLocaleString('en-US') }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[net_metering]]",
+              "replaceText": "={{ $('Edit Fields').item.json.net_metering.toLocaleString('en-US') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "e6b51726-2c40-4905-9d1c-5f54d9d7fbb9",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "jz1eEdRAKly2QX7f",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Copy file').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf"
+            }
+          },
+          "fileName": "=Quote_{{ $('Edit Fields').item.json.quote_no }}.pdf"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        896,
+        0
+      ],
+      "id": "97fc9101-bf6f-41a7-8e64-8ba5dff945d5",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "CgbqBXud8348KYi2",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendFileByUpload/YOUR_API_TOKEN",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').item.json.phone }}@c.us"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $('When Executed by Another Workflow').first().json.language === 'en' ? 'Your solar quotation is ready.' : 'Aapka solar quotation tayyar hai.' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "faf19080-35f3-4e47-be3f-2488934311ec",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2531ef45-f19b-446a-b6ab-0b9e5a142ade",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "lead_id": 1790925000123,
+          "name": "Aziz",
+          "phone": "923276374572",
+          "city": "Bahawalpur",
+          "kw": 8.5,
+          "panels": 340000,
+          "inverter": 212500,
+          "structure": 68000,
+          "installation": 102000,
+          "net_metering": 30000,
+          "total": 752500
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Copy file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy file": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "37910bcc-8900-4a7a-8465-2c49a51e16aa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+  },
+  "nodeGroups": [],
+  "id": "5pGABZLFNAOU7lwc",
+  "tags": []
+}
