@@ -6,10 +6,10 @@
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        304,
+        -128
       ],
-      "id": "3b6598bd-6bd4-4201-80a5-0788d7e11c91",
+      "id": "e7c9e1e0-9e52-4df0-9829-f02552820122",
       "name": "Error Trigger"
     },
     {
@@ -74,15 +74,39 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        224,
-        0
+        608,
+        -16
       ],
-      "id": "84e2bda7-2422-4972-8cb5-e6b33917e8e2",
+      "id": "976f3c12-4d36-4a63-b820-6b386ec62c24",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
+          "id": "QHrHs23ZqGHbingX",
           "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "YOUR_OWNER_EMAIL",
+        "subject": "=ALERT: {{ $json.workflow.name }} failed",
+        "emailType": "text",
+        "message": "=Workflow: {{ $json.workflow.name }}\nExecution: {{ $json.execution.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        -240
+      ],
+      "id": "ff7ef163-85fd-469c-bb40-864ba92c9624",
+      "name": "Send a message",
+      "webhookId": "635041ac-a349-4547-8d0e-ebbe07e6584b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1NMooXK2CFf2yL9b",
+          "name": "Gmail account"
         }
       }
     }
@@ -93,26 +117,35 @@
       "main": [
         [
           {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
             "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
         ]
       ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
+    "binaryMode": "separate"
   },
-  "versionId": "82ae254f-abe5-4009-814f-315ef57cdd6b",
+  "versionId": "deff5b63-ab1a-47c3-8ca0-17a5445e8e4c",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+    "instanceId": "ff4babfe8c185ba605498e4c1b7f442c678e919ceb038d40df3a9102584b020a"
   },
   "nodeGroups": [],
-  "id": "l05XJHUzSx82lemD",
+  "id": "jvfPVHKcTMM3BeGB",
   "tags": []
 }

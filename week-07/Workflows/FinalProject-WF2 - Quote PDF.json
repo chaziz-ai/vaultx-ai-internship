@@ -87,7 +87,7 @@
         224,
         0
       ],
-      "id": "f9b628c7-104a-4288-b127-936dd190fcd6",
+      "id": "7b85482a-4753-4a20-bd55-a8d0071de059",
       "name": "Edit Fields"
     },
     {
@@ -109,11 +109,11 @@
         448,
         0
       ],
-      "id": "fe206bd1-ed11-4483-8ee9-587032597f37",
+      "id": "3c7e67bc-cb20-494c-9e5a-5f713d0b6073",
       "name": "Copy file",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "CgbqBXud8348KYi2",
+          "id": "Lhatre7mc8On8uuU",
           "name": "Google Drive account"
         }
       }
@@ -193,11 +193,11 @@
         672,
         0
       ],
-      "id": "e6b51726-2c40-4905-9d1c-5f54d9d7fbb9",
+      "id": "b8e13dc2-72b7-47a4-a514-22375fb238f0",
       "name": "Update a document",
       "credentials": {
         "googleDocsOAuth2Api": {
-          "id": "jz1eEdRAKly2QX7f",
+          "id": "25343DzStBYDAYsu",
           "name": "Google Docs account"
         }
       }
@@ -225,19 +225,73 @@
         896,
         0
       ],
-      "id": "97fc9101-bf6f-41a7-8e64-8ba5dff945d5",
+      "id": "a05fad7f-a357-45c3-bdc7-eb8951b9b4b0",
       "name": "Download file",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "CgbqBXud8348KYi2",
+          "id": "Lhatre7mc8On8uuU",
           "name": "Google Drive account"
         }
       }
     },
     {
       "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2b5db31b-3b66-4ad1-b527-a85ca7cd8086",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendFileByUpload/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chatId",
+              "value": "={{ $('Edit Fields').item.json.phone }}@c.us"
+            },
+            {
+              "name": "message",
+              "value": "Aapki quotation tayyar ho rahi hai, hamari team jald aap ko bhej degi."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1488,
+        48
+      ],
+      "id": "37b9538d-7b73-4555-bc36-397c44372cc7",
+      "name": "Fallback Message"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Quote PDF send failed"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        48
+      ],
+      "id": "582420c3-7f45-41ee-9a9b-cc7781aa62b4",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendFileByUpload/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "contentType": "multipart-form-data",
         "bodyParameters": {
@@ -265,21 +319,11 @@
         1120,
         0
       ],
-      "id": "faf19080-35f3-4e47-be3f-2488934311ec",
-      "name": "HTTP Request"
-    },
-    {
-      "parameters": {
-        "inputSource": "passthrough"
-      },
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        0,
-        0
-      ],
-      "id": "2531ef45-f19b-446a-b6ab-0b9e5a142ade",
-      "name": "When Executed by Another Workflow"
+      "id": "7b5be6e0-70a5-4dd6-a6e8-883b015a9a77",
+      "name": "Send Quote PDF",
+      "retryOnFail": true,
+      "waitBetweenTries": 2000,
+      "onError": "continueErrorOutput"
     }
   ],
   "pinData": {
@@ -288,7 +332,7 @@
         "json": {
           "lead_id": 1790925000123,
           "name": "Aziz",
-          "phone": "923276374572",
+          "phone": "YOUR_TEST_NUMBER",
           "city": "Bahawalpur",
           "kw": 8.5,
           "panels": 340000,
@@ -339,7 +383,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Send Quote PDF",
             "type": "main",
             "index": 0
           }
@@ -356,20 +400,46 @@
           }
         ]
       ]
+    },
+    "Fallback Message": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Quote PDF": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Fallback Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "jvfPVHKcTMM3BeGB",
+    "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false
   },
-  "versionId": "37910bcc-8900-4a7a-8465-2c49a51e16aa",
+  "versionId": "5d81be7b-8bd2-4298-9050-1fa3306fe24f",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+    "instanceId": "ff4babfe8c185ba605498e4c1b7f442c678e919ceb038d40df3a9102584b020a"
   },
   "nodeGroups": [],
-  "id": "5pGABZLFNAOU7lwc",
+  "id": "ZdFzM9ah3hgRO5kw",
   "tags": []
 }

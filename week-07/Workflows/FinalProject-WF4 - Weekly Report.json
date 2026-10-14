@@ -25,12 +25,12 @@
         224,
         0
       ],
-      "id": "f5641f65-ea18-4c8c-949c-b6f123a6c793",
+      "id": "8238497a-f8f1-4b3f-8fc3-08e0cdf99199",
       "name": "Get row(s) in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -44,12 +44,12 @@
         448,
         0
       ],
-      "id": "37055d65-1bcb-445c-abba-5f1342b9cb1d",
+      "id": "10dd1cb4-af27-444f-b395-cd494cb40a48",
       "name": "Code in JavaScript"
     },
     {
       "parameters": {
-        "sendTo": "mailforaziz784@gmail.com",
+        "sendTo": "YOUR_OWNER_EMAIL",
         "subject": "SolarFlow Weekly Report",
         "message": "={{ $json.html }}",
         "options": {}
@@ -60,12 +60,12 @@
         672,
         0
       ],
-      "id": "3869fa90-f19a-472a-898f-12107a2543cd",
+      "id": "5ac92791-b5d1-4ef3-845c-6bf6d29d1ebb",
       "name": "Send a message",
       "webhookId": "8aca9cc9-ab06-4cf4-811d-0d35a569a9ce",
       "credentials": {
         "gmailOAuth2": {
-          "id": "inwweg30JvMcVnUW",
+          "id": "1NMooXK2CFf2yL9b",
           "name": "Gmail account"
         }
       }
@@ -90,7 +90,7 @@
         0,
         0
       ],
-      "id": "25ccd267-9be7-4d55-9efa-186be1f87f58",
+      "id": "54d60b0b-dd92-48e3-8208-ba940ac64d74",
       "name": "Schedule Trigger"
     }
   ],
@@ -134,17 +134,17 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false,
     "timeSavedMode": "fixed",
-    "errorWorkflow": "l05XJHUzSx82lemD",
-    "callerPolicy": "workflowsFromSameOwner"
+    "errorWorkflow": "jvfPVHKcTMM3BeGB",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "versionId": "0573f21f-7f2e-43a5-82a1-21a301ce39f0",
+  "versionId": "218938e1-47cf-4519-aa31-c33a83a9724b",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+    "instanceId": "ff4babfe8c185ba605498e4c1b7f442c678e919ceb038d40df3a9102584b020a"
   },
   "nodeGroups": [],
-  "id": "jIpfe9ncNmcy2PYg",
+  "id": "yzfB1e5lp06mqyG1",
   "tags": []
 }

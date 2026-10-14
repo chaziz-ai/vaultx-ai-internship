@@ -175,15 +175,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        3760,
-        544
+        1344,
+        976
       ],
-      "id": "6641f358-9156-4917-a513-8b5197c792b7",
+      "id": "a692c2b7-415c-47d0-8f13-e665cc1f8d61",
       "name": "Append row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -196,10 +196,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -48,
-        0
+        -2464,
+        432
       ],
-      "id": "055654f7-c83a-4008-964e-b49cf381d4ea",
+      "id": "5b719547-9bde-4f08-8b0e-1e27e6aed963",
       "name": "Webhook",
       "webhookId": "13cb60e1-831d-4878-99b4-ad57e528ef76"
     },
@@ -232,10 +232,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        608,
-        0
+        -1808,
+        432
       ],
-      "id": "f17e5725-b1b5-44a0-90fe-5455c053e0b9",
+      "id": "abc312a3-e8da-4dc7-8872-3c9733a38fa5",
       "name": "Edit Fields"
     },
     {
@@ -245,10 +245,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3376,
-        544
+        960,
+        976
       ],
-      "id": "7c0cd30c-0f79-4fad-89d1-ae09f1e6d776",
+      "id": "b85eb3db-0401-4cc9-952a-b51bcf5b1b8d",
       "name": "Calculation"
     },
     {
@@ -279,10 +279,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        400,
-        0
+        -2016,
+        432
       ],
-      "id": "dd401ce0-5c46-4881-aac6-30e09877e9f5",
+      "id": "fc55de2c-9e2b-45be-8d2d-fe3351ad59d4",
       "name": "Filter"
     },
     {
@@ -298,7 +298,7 @@
             {
               "id": "cba1de91-32fc-41dc-ab5a-bce6f55c57e1",
               "leftValue": "={{ $json.body.senderData.chatId }}",
-              "rightValue": "923276374572@c.us",
+              "rightValue": "YOUR_TEST_NUMBER@c.us",
               "operator": {
                 "type": "string",
                 "operation": "equals",
@@ -313,16 +313,16 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.3,
       "position": [
-        176,
-        0
+        -2240,
+        432
       ],
-      "id": "bd58ed54-f142-44dd-9a36-6b01745f9fb6",
+      "id": "54c1536f-f2d4-448e-bfe3-421838fa6fea",
       "name": "Filter1"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -341,16 +341,16 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        4144,
-        544
+        1728,
+        976
       ],
-      "id": "1d094965-ab48-41ba-8813-65e859325272",
+      "id": "584434a0-60fb-4f59-b7bc-384e1ebd2bab",
       "name": "Send Estimate"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -369,10 +369,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        3008,
-        784
+        592,
+        1216
       ],
-      "id": "455a4426-599a-44b0-9d44-0794316592e6",
+      "id": "fcc65cb1-ca74-4de4-b4fe-000272f42273",
       "name": "Send Estimate1"
     },
     {
@@ -405,10 +405,10 @@
       "type": "@n8n/n8n-nodes-langchain.informationExtractor",
       "typeVersion": 1.2,
       "position": [
-        2224,
-        560
+        -192,
+        992
       ],
-      "id": "954fa89f-0c67-4d84-a9fe-d47d552d39e4",
+      "id": "fdf5dff8-02c4-4290-8eb6-98a40bd19eb0",
       "name": "Information Extractor"
     },
     {
@@ -425,15 +425,16 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        2240,
-        880
+        -176,
+        1312
       ],
-      "id": "99c5371e-b6d6-458a-92c9-c7224c32bed0",
+      "id": "08bac746-fc9e-4dbf-899e-c161bbf2c199",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
-          "id": "7lvEEqbMcnYpot6v",
-          "name": "OpenAI account"
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
         }
       }
     },
@@ -458,15 +459,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2976,
-        544
+        560,
+        976
       ],
-      "id": "fe54f129-716b-4797-8946-a346999612e1",
+      "id": "1f2eb905-b267-42e2-9593-9330c7187b6e",
       "name": "Get Price_List",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -518,10 +519,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2656,
-        560
+        240,
+        992
       ],
-      "id": "794937d9-5d25-422d-968e-e566926166a4",
+      "id": "cd9bbf27-f25e-4678-9212-a2e1dd8e8aea",
       "name": "If1"
     },
     {
@@ -533,19 +534,19 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        4464,
-        544
+        2048,
+        976
       ],
-      "id": "a2851aba-a000-4006-9f0c-2044734fbdc5",
+      "id": "69ba72a2-653a-4a9f-8c9f-c70c172e26df",
       "name": "Prepare Quote Data"
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "5pGABZLFNAOU7lwc",
+          "value": "ZdFzM9ah3hgRO5kw",
           "mode": "list",
-          "cachedResultUrl": "/workflow/5pGABZLFNAOU7lwc",
+          "cachedResultUrl": "/workflow/ZdFzM9ah3hgRO5kw",
           "cachedResultName": "FinalProject-WF2 - Quote PDF"
         },
         "workflowInputs": {
@@ -562,10 +563,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        4848,
-        544
+        2432,
+        976
       ],
-      "id": "8ecb8973-d471-4a98-93c5-0e347ecf55c7",
+      "id": "42aac8c7-d375-4c9d-9820-f985cd6a37dc",
       "name": "Call 'FinalProject-WF2 - Quote PDF'"
     },
     {
@@ -597,10 +598,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1504,
-        0
+        -912,
+        432
       ],
-      "id": "1fe08b47-dddc-4850-98d8-f9f4348f3456",
+      "id": "50f5e784-4108-49a7-8ed1-d160c477de16",
       "name": "Existing lead?"
     },
     {
@@ -633,10 +634,10 @@
       "type": "@n8n/n8n-nodes-langchain.textClassifier",
       "typeVersion": 1.1,
       "position": [
-        1872,
-        -48
+        -544,
+        384
       ],
-      "id": "b044110b-a27c-452a-b1d5-2d5bf37ba741",
+      "id": "c1a557c0-309d-44db-a2ae-b1576d3fac66",
       "name": "Text Classifier"
     },
     {
@@ -645,7 +646,8 @@
           "__rl": true,
           "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4o-mini"
+          "cachedResultName": "gpt-4o-mini",
+          "cachedResultUrl": ""
         },
         "builtInTools": {},
         "options": {}
@@ -653,14 +655,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        2016,
-        256
+        -400,
+        688
       ],
-      "id": "3ac9d07b-6c36-4367-b95f-fdcd744975b9",
+      "id": "f24f1bf7-084d-4238-9703-a17adbf3234c",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
-          "id": "7lvEEqbMcnYpot6v",
+          "id": "kvpFM3XYrfNRksjj",
           "name": "OpenAI account"
         }
       }
@@ -842,15 +844,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2416,
-        -432
+        0,
+        0
       ],
-      "id": "bbd7cfb8-cb69-4ac2-add7-cc67e626133a",
+      "id": "2602efad-a8f5-4c1a-9edc-2885b9768bc7",
       "name": "Update row in sheet",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -1020,15 +1022,15 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2416,
-        -160
+        0,
+        272
       ],
-      "id": "4de0523a-f175-4d01-97e3-b7b442c4845e",
+      "id": "03aa369d-545f-4597-8012-f56fc9e8e223",
       "name": "Update row in sheet1",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -1198,22 +1200,22 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        2416,
-        80
+        0,
+        512
       ],
-      "id": "991cdc2f-342a-44b7-b537-1cdf7933a57f",
+      "id": "017fe902-f190-496b-91d4-2dfeac8cf3f5",
       "name": "Update row in sheet2",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -1232,10 +1234,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        2720,
-        336
+        304,
+        768
       ],
-      "id": "2536e0f2-f468-499c-b22a-b0bdd1d7da65",
+      "id": "7dd13bf3-cd68-4cf7-9d8e-6d348c098e6a",
       "name": "Send Other Reply"
     },
     {
@@ -1245,16 +1247,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1200,
-        0
+        -1216,
+        432
       ],
-      "id": "65361bde-1535-454b-af20-2e47f0378761",
+      "id": "c514ec5d-0bc9-4b3a-a9fb-77d10b4c4ec2",
       "name": "Latest Row"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -1273,16 +1275,16 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        2704,
-        -432
+        288,
+        0
       ],
-      "id": "b2c32cbc-08e3-488c-9878-42900380f5f2",
+      "id": "c1dc8d0a-06a0-42b5-9b9f-6e6db755f923",
       "name": "Reply Interested"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -1301,16 +1303,16 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        2704,
-        -160
+        288,
+        272
       ],
-      "id": "a2b64c03-0db1-4bc2-b453-d4aa8431047a",
+      "id": "f57d1592-e005-4e2c-a184-f92defee1fed",
       "name": "Reply Negotiating"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_API_TOKEN",
+        "url": "=https://7107.api.greenapi.com/waInstance710722752998/sendMessage/YOUR_GREENAPI_TOKEN",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -1329,15 +1331,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        2704,
-        80
+        288,
+        512
       ],
-      "id": "29831947-c40a-4a0e-8f1f-142f8b384a2c",
+      "id": "988db75a-a585-4370-bd0e-810df301870d",
       "name": "Reply Not Interested"
     },
     {
       "parameters": {
-        "sendTo": "mailforaziz784@gmail.com",
+        "sendTo": "YOUR_OWNER_EMAIL",
         "subject": "New customer message - needs follow-up",
         "emailType": "text",
         "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nPlease contact this customer.' }}",
@@ -1346,22 +1348,22 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        2432,
-        336
+        16,
+        768
       ],
-      "id": "f4f13ef5-4502-4788-852c-ae54cd582a0c",
+      "id": "0f76391d-854b-4a8d-b93e-415731c0a430",
       "name": "Notify Owner",
       "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
       "credentials": {
         "gmailOAuth2": {
-          "id": "inwweg30JvMcVnUW",
+          "id": "1NMooXK2CFf2yL9b",
           "name": "Gmail account"
         }
       }
     },
     {
       "parameters": {
-        "sendTo": "mailforaziz784@gmail.com",
+        "sendTo": "YOUR_OWNER_EMAIL",
         "subject": "HOT LEAD - customer wants a site visit",
         "emailType": "text",
         "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nCity: ' + $('Latest Row').first().json.city + '\\nEstimate: Rs ' + $('Latest Row').first().json.estimate_pkr + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nThis customer wants a site visit. Please contact them.' }}",
@@ -1370,22 +1372,22 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        3024,
-        -432
+        608,
+        0
       ],
-      "id": "6b735bae-1923-4739-8258-2a11a6cada12",
+      "id": "df44303b-5f5c-4fc0-a1eb-df6bc4e01c79",
       "name": "Notify Owner Interested",
       "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
       "credentials": {
         "gmailOAuth2": {
-          "id": "inwweg30JvMcVnUW",
+          "id": "1NMooXK2CFf2yL9b",
           "name": "Gmail account"
         }
       }
     },
     {
       "parameters": {
-        "sendTo": "mailforaziz784@gmail.com",
+        "sendTo": "YOUR_OWNER_EMAIL",
         "subject": "Customer wants a better price",
         "emailType": "text",
         "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nCity: ' + $('Latest Row').first().json.city + '\\nEstimate: Rs ' + $('Latest Row').first().json.estimate_pkr + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nThis customer is negotiating on price. Please call and discuss options.' }}",
@@ -1394,22 +1396,22 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        3024,
-        -160
+        608,
+        272
       ],
-      "id": "382b741e-d93d-450d-a70a-6cfceff42dcb",
+      "id": "b5f3b441-6408-485f-bbdb-c4de575263c6",
       "name": "Notify Owner Negotiating",
       "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
       "credentials": {
         "gmailOAuth2": {
-          "id": "inwweg30JvMcVnUW",
+          "id": "1NMooXK2CFf2yL9b",
           "name": "Gmail account"
         }
       }
     },
     {
       "parameters": {
-        "sendTo": "mailforaziz784@gmail.com",
+        "sendTo": "YOUR_OWNER_EMAIL",
         "subject": "Customer not interested",
         "emailType": "text",
         "message": "={{ 'Customer: ' + $('Latest Row').first().json.name + '\\nPhone: ' + $('Edit Fields').first().json.chatId.replace('@c.us','') + '\\nCity: ' + $('Latest Row').first().json.city + '\\nEstimate: Rs ' + $('Latest Row').first().json.estimate_pkr + '\\nMessage: ' + $('Edit Fields').first().json.text + '\\n\\nThis customer said no. No more follow-ups will be sent.' }}",
@@ -1418,15 +1420,15 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        3024,
-        80
+        608,
+        512
       ],
-      "id": "053f52dd-a353-4963-b37d-7a8091fbc3f1",
+      "id": "c48334a6-8569-423b-ac62-4838450178e3",
       "name": "Notify Owner Not Interested",
       "webhookId": "54190e40-d1db-4183-a5b2-8dc93a0f7cfa",
       "credentials": {
         "gmailOAuth2": {
-          "id": "inwweg30JvMcVnUW",
+          "id": "1NMooXK2CFf2yL9b",
           "name": "Gmail account"
         }
       }
@@ -1462,16 +1464,16 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        912,
-        0
+        -1504,
+        432
       ],
-      "id": "3ec8008f-7f49-414c-b900-e0ccf295816f",
+      "id": "05eae437-cd2f-4804-be87-5b9a23ccc552",
       "name": "Get row(s) in sheet1",
       "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "DRbZ1ij8ED5eKiM3",
-          "name": "Google Sheets account"
+          "id": "8qonIMWjqzCL03Kg",
+          "name": "Google Sheets account 2"
         }
       }
     }
@@ -1789,17 +1791,17 @@
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false,
     "timeSavedMode": "fixed",
-    "errorWorkflow": "l05XJHUzSx82lemD",
-    "callerPolicy": "workflowsFromSameOwner"
+    "errorWorkflow": "jvfPVHKcTMM3BeGB",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "versionId": "3ef2c31f-6726-42cd-8069-3be41730b331",
+  "versionId": "d39a549d-f497-40b3-b6d4-b384ef652fcf",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "ad8932cf702a55ac051aeeac08ae32cd6d5af08c325c897dfef5ce9355e7a8af"
+    "instanceId": "ff4babfe8c185ba605498e4c1b7f442c678e919ceb038d40df3a9102584b020a"
   },
   "nodeGroups": [],
-  "id": "8qSTdT0nLfhVU6S3",
+  "id": "al6y3X46eZeX7fSt",
   "tags": []
 }
